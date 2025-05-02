@@ -1,21 +1,39 @@
+"use client";
 import DutiesCard from "@/components/view-duty/DutiesCard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdLocationPin } from "react-icons/md";
+import { useAtom } from "jotai";
+import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
+import axios from "axios";
 
 function page() {
+  const [data, setData] = useAtom(homePageStatsAtoms);
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get("/api/users");
+        console.log(response.data);
+        setData(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getUsers();
+  }, []);
   return (
     <div className="mt-32 flex flex-col items-center">
-      <DutiesCard shift="24 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="24 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="DIEPEE" />
-      <DutiesCard shift="24 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="12 HR" noOfPeople="7" camp="BEDOK" />
-      <DutiesCard shift="24 HR" noOfPeople="7" camp="DIEPPE" />
+      {data.map((x, index) => (
+        <DutiesCard
+          key={index}
+          date={x.date}
+          shift={x.shift}
+          noOfPeople={
+            (x.comdsName?.length ?? 0) + (x.troopersName?.length ?? 0)
+          }
+          camp={x.camp}
+          guardcomd={x.comdsName?.[0]}
+        />
+      ))}
     </div>
   );
 }

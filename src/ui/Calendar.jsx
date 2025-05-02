@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Lobster } from "next/font/google";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { IoMdArrowDropright } from "react-icons/io";
+import { useAtom } from "jotai";
+import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
+import { getDayAndMonthFromDateInput } from "@/util";
 
 const lobsterFont = Lobster({ subsets: ["latin"], weight: "400" });
 const months = [
@@ -29,6 +32,7 @@ const dayList = [
   "Saturday",
 ];
 function Calendar() {
+  const [data, setData] = useAtom(homePageStatsAtoms);
   const [currentMonthNumberReflected, setCurrentMonthNumberReflected] =
     useState(new Date().getMonth());
   const currentMonthName = months[currentMonthNumberReflected];
@@ -38,6 +42,10 @@ function Calendar() {
     currentMonthNumberReflected + 1,
     0
   ).getDate();
+
+  const highlightedDates = data.map((item) =>
+    getDayAndMonthFromDateInput(item.date)
+  );
 
   return (
     <div className="w-full max-w-[95%] lg:max-w-[80%] mx-auto shadow-lg rounded-2xl p-1 py-5 md:p-8">
@@ -71,9 +79,16 @@ function Calendar() {
             key={i}
             className={`text-secondary-content border border-base-300 px-1.5 py-2.5 rounded-xl ${
               i + 1 === currentDateInNumber &&
-              currentMonthNumberReflected == new Date().getMonth()
+              currentMonthNumberReflected === new Date().getMonth()
                 ? "bg-secondary text-secondary-content"
                 : null
+            } ${
+              highlightedDates.some(
+                (d) =>
+                  d.day === i + 1 && d.month === currentMonthNumberReflected + 1
+              )
+                ? "bg-green-300"
+                : ""
             }`}
           >
             {i + 1}

@@ -8,7 +8,7 @@ const poppinsFont = Poppins({ subsets: ["latin"], weight: "400" });
 function Header() {
   return (
     <div
-      className={`${poppinsFont.className} text-3xl text-neutral w-full py-4 border border-b-2 border-slate-200 flex items-center justify-center z-50 fixed`}
+      className={`${poppinsFont.className} text-3xl text-neutral w-full py-4 border border-b-2 border-slate-200 flex items-center justify-center z-50 fixed backdrop-blur-lg opacity-100`}
     >
       <div className="absolute dropdown left-0 pl-8">
         <div tabIndex={0} className="btn btn-ghost btn-circle">
