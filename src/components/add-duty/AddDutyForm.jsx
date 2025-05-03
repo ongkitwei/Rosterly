@@ -6,10 +6,10 @@ import names from "../../../data/troopersNames.json"; // adjust the path to matc
 import comdnames from "../../../data/comdsNames.json"; // adjust the path to match your file
 import axios from "axios";
 
-const robotoFont = Roboto({ subsets: ["latin"], weight: "400" });
+const robotoFont = Roboto({ subsets: ["latin"], weight: "700" });
 
 function AddDutyForm() {
-  const [troopersName, setTroopersName] = useState([]);
+  const [troopersName, setTroopersName] = useState([""]);
   const [comdsName, setComdsName] = useState([]);
   const [camp, setCamp] = useState("");
   const [date, setDate] = useState("");
@@ -19,25 +19,30 @@ function AddDutyForm() {
 
   return (
     <div className="w-full max-w-[95%] mx-auto lg:max-w-[80%] h-fit bg-base-100 shadow-lg rounded-2xl p-5 lg:p-12 mt-4 mb-12">
-      <h2 className={`font-black pb-4 text-2xl ${robotoFont.className}`}>
+      <h2
+        className={`font-extrabold pb-8 text-center text-gray-800 text-3xl ${robotoFont.className}`}
+      >
         CREATE DUTY LIST
       </h2>
       <form className="w-full">
         <select
           className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
           onChange={(x) => setCamp(x.target.value)}
+          value={camp || ""}
         >
-          <option defaultValue>select camp</option>
+          <option value="" disabled>
+            select camp
+          </option>
 
           <option value="DIEPPE">DIEPPE</option>
           <option value="BEDOK">BEDOK</option>
         </select>
       </form>
 
-      <div className="flex flex-row items-end justify-center mt-8 gap-4">
+      <div className="flex flex-row items-end justify-center mt-8 gap-4 mb-8">
         <div>
           {" "}
-          <label htmlFor="datee" className="pl-2 text-slate-500">
+          <label htmlFor="datee" className="pl-2 text-slate-500 text-xs">
             Date of Guard Duty
           </label>
           <input
@@ -53,36 +58,52 @@ function AddDutyForm() {
           <select
             className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
             onChange={(x) => setShift(x.target.value)}
-            value={shift}
+            value={shift || ""}
           >
-            <option disabled>shift hours</option>
+            <option value="" disabled>
+              shift hours
+            </option>
             <option value="12 HR">12 HR</option>
             <option value="24 HR">24 HR</option>
           </select>
         </form>
       </div>
-      <h2 className="text-lg mt-5 pl-1 pb-2 pt-8">DUTY NAMES</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <form className="w-full">
-          <select
-            className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
-            onChange={(e) => {
-              const updated = [...troopersName];
-              updated[0] = e.target.value;
-              setTroopersName(updated);
-            }}
-            value={troopersName[0]}
-          >
-            <option defaultValue>trooper name</option>
 
-            {names.map((name, index) => (
-              <option key={index} value={name}>
-                {name}
+      <span className="text-lg mt-5 pl-1 pb-2 pt-8 pr-8">DUTY NAMES</span>
+      <span
+        className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 hover:cursor-pointer"
+        onClick={() => setTroopersName([...troopersName, ""])}
+      >
+        {" "}
+        + trooper
+      </span>
+
+      <div>
+        <form className="w-full pt-4">
+          {troopersName.map((name, index) => (
+            <select
+              className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500 mb-4"
+              onChange={(e) => {
+                const updated = [...troopersName];
+                updated[index] = e.target.value;
+                setTroopersName(updated);
+              }}
+              value={troopersName[index] || ""}
+              key={index}
+            >
+              <option value="" disabled>
+                trooper name
               </option>
-            ))}
-          </select>
+
+              {names.map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          ))}
         </form>{" "}
-        <form className="w-full">
+        {/* <form className="w-full">
           <select
             className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
             onChange={(e) => {
@@ -90,9 +111,11 @@ function AddDutyForm() {
               updated[1] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[1]}
+            value={troopersName[1] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -109,9 +132,11 @@ function AddDutyForm() {
               updated[2] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[2]}
+            value={troopersName[2] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -128,9 +153,11 @@ function AddDutyForm() {
               updated[3] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[3]}
+            value={troopersName[3] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -147,9 +174,11 @@ function AddDutyForm() {
               updated[4] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[4]}
+            value={troopersName[4] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -166,9 +195,11 @@ function AddDutyForm() {
               updated[5] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[5]}
+            value={troopersName[5] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -185,9 +216,11 @@ function AddDutyForm() {
               updated[6] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[6]}
+            value={troopersName[6] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -204,9 +237,11 @@ function AddDutyForm() {
               updated[7] = e.target.value;
               setTroopersName(updated);
             }}
-            value={troopersName[7]}
+            value={troopersName[7] || ""}
           >
-            <option defaultValue>trooper name</option>
+            <option value="" disabled>
+              trooper name
+            </option>
 
             {names.map((name, index) => (
               <option key={index} value={name}>
@@ -214,8 +249,9 @@ function AddDutyForm() {
               </option>
             ))}
           </select>
-        </form>
+        </form> */}
       </div>
+      <h2 className="pl-1 text-base pt-5">Commaders name</h2>
       <form className="w-full mt-4">
         <select
           className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
@@ -224,9 +260,11 @@ function AddDutyForm() {
             updated[0] = e.target.value; // for GC1
             setComdsName(updated);
           }}
-          value={comdsName[0]}
+          value={comdsName[0] || ""}
         >
-          <option defaultValue>GC name</option>
+          <option value="" disabled>
+            GC name
+          </option>
 
           {comdnames.map((name, index) => (
             <option key={index} value={name}>
@@ -243,9 +281,11 @@ function AddDutyForm() {
             updated[1] = e.target.value; // for GC1
             setComdsName(updated);
           }}
-          value={comdsName[1]}
+          value={comdsName[1] || ""}
         >
-          <option defaultValue>G2 name</option>
+          <option value="" disabled>
+            G2 name
+          </option>
           {comdnames.map((name, index) => (
             <option key={index} value={name}>
               {name}
@@ -259,7 +299,7 @@ function AddDutyForm() {
         onClick={async () => {
           setIsAdded(!isAdded);
           setComdsName([]);
-          setTroopersName([]);
+          setTroopersName([""]);
           setDate("");
           setCamp("");
           setShift("");
