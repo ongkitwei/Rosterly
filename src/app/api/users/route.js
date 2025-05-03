@@ -5,10 +5,11 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     await connectionToMongoDb();
-    const { camp, date, shift, troopersName, comdsName } = await request.json();
+    const { camp, fulldate, shift, troopersName, comdsName } =
+      await request.json();
     const newUser = new User({
       camp: camp,
-      date: date,
+      date: fulldate,
       shift: shift,
       troopersName: troopersName,
       comdsName: comdsName,

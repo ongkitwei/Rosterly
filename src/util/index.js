@@ -4,3 +4,9 @@ export function getDayAndMonthFromDateInput(dateInput) {
   const day = date.getDate(); // getDate() is 1-based
   return { month, day };
 }
+
+export function getDayName(selectedDate) {
+  const dateObj = new Date(selectedDate);
+  const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" }); // "Thursday"
+  return dayName;
+}

@@ -1,6 +1,5 @@
 import HomepageStats from "@/components/homepage/HomepageStats";
 import Calendar from "@/ui/Calendar";
-
 import React from "react";
 
 function page() {
