@@ -102,7 +102,7 @@ function Calendar() {
         </div>
         <div className="flex items-center gap-2 pr-2.5">
           <p className="h-3 w-3 bg-green-400 rounded-md"></p>
-          <span>Active Duty</span>
+          <span>Al Duties</span>
         </div>
       </legend>
     </div>

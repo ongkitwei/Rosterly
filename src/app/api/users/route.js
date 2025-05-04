@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     await connectionToMongoDb();
-    const { camp, date, dayName, shift, troopersName, comdsName } =
+    const { camp, date, dayName, shift, troopersName, comdsName, reserveName } =
       await request.json();
     const newUser = new User({
       camp: camp,
@@ -14,6 +14,7 @@ export async function POST(request) {
       shift: shift,
       troopersName: troopersName,
       comdsName: comdsName,
+      reserveName: reserveName,
     });
     await newUser.save();
     return NextResponse.json(newUser, { status: 201 });

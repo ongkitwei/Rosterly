@@ -13,7 +13,7 @@ function HomepageStats() {
 
   const [todayFormatted, setTodayFormatted] = useState(null);
   const [dateHasPassed, setDateHasPassed] = useState(0);
-
+  const [dateYetPassed, setDateYetPassed] = useState(0);
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -34,6 +34,8 @@ function HomepageStats() {
         response.data.map((x) => {
           if (isDatePassed(x.date)) {
             setDateHasPassed((prev) => prev + 1);
+          } else {
+            setDateYetPassed((prev) => prev + 1);
           }
         });
       } catch (err) {
@@ -64,7 +66,7 @@ function HomepageStats() {
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-yellow-400 rounded-md"></p>
 
-          <span className="font-bold">1</span>
+          <span className="font-bold">{dateYetPassed}</span>
           <span>In Progress</span>
         </div>
       </div>

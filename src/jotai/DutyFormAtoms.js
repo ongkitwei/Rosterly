@@ -5,7 +5,7 @@ const shiftAtoms = atom("");
 const dateAtoms = atom("");
 const troopersMainAtoms = atom([""]);
 const commandersAtoms = atom([]);
-const reserveAtoms = atom([]);
+const reserveAtoms = atom([""]);
 
 export {
   campAtoms,

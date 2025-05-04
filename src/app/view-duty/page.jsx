@@ -31,7 +31,9 @@ function page() {
           day={x.dayName}
           shift={x.shift}
           noOfPeople={
-            (x.comdsName?.length ?? 0) + (x.troopersName?.length ?? 0)
+            (x.comdsName?.length ?? 0) +
+            (x.troopersName?.length ?? 0) +
+            (x.reserveName?.length ?? 0)
           }
           camp={x.camp}
           guardcomd={x.comdsName?.[0]}

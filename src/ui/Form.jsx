@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
 import names from "../../data/troopersNames.json";
 import comdnames from "../../data/comdsNames.json";
+import allnames from "../../data/names.json";
 import { useAtom } from "jotai";
 import axios from "axios";
 import { getDayName } from "@/util/index";
@@ -24,6 +25,7 @@ function Form({ title, buttonName }) {
   const [shift, setShift] = useAtom(shiftAtoms);
   const [troopersName, setTroopersName] = useAtom(troopersMainAtoms);
   const [comdsName, setComdsName] = useAtom(commandersAtoms);
+  const [reserveName, setReserveName] = useAtom(reserveAtoms);
 
   const [isAdded, setIsAdded] = useState(false);
 
@@ -49,6 +51,7 @@ function Form({ title, buttonName }) {
         shift,
         troopersName,
         comdsName,
+        reserveName,
       });
       console.log(response);
       setIsAdded(!isAdded);
@@ -57,6 +60,7 @@ function Form({ title, buttonName }) {
       setDate("");
       setCamp("");
       setShift("");
+      setReserveName([""]);
     } catch (err) {
       console.error(err);
     }
@@ -165,7 +169,7 @@ function Form({ title, buttonName }) {
             ))}
           </select>
           <select
-            className="mt-4 border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
+            className="mt-4 border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500 mb-16"
             onChange={(e) => {
               const updated = [...comdsName];
               updated[1] = e.target.value; // for GC1
@@ -182,8 +186,8 @@ function Form({ title, buttonName }) {
               </option>
             ))}
           </select>
-          <select
-            className="mt-4 border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
+          {/* <select
+            className="mt-4 border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500 mb-12"
             onChange={(e) => {
               const updated = [...comdsName];
               updated[2] = e.target.value; // for GC1
@@ -199,8 +203,39 @@ function Form({ title, buttonName }) {
                 {name}
               </option>
             ))}
-          </select>
+          </select> */}
+          <span className="pl-1 pr-8">RESERVES</span>
+          <span
+            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 hover:cursor-pointer"
+            onClick={() => setReserveName([...reserveName, ""])}
+          >
+            {" "}
+            + reserve
+          </span>
+          {reserveName.map((name, index) => (
+            <select
+              className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500 mb-4 mt-4"
+              onChange={(e) => {
+                const updated = [...reserveName];
+                updated[index] = e.target.value;
+                setReserveName(updated);
+              }}
+              value={reserveName[index] || ""}
+              key={index}
+            >
+              <option value="" disabled>
+                reserve name
+              </option>
+
+              {allnames.map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          ))}
         </div>
+
         <button className="btn btn-soft btn-info mt-12 w-full" type="submit">
           {buttonName}
         </button>
