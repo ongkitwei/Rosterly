@@ -10,3 +10,10 @@ export function getDayName(selectedDate) {
   const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" }); // "Thursday"
   return dayName;
 }
+
+export function isDatePassed(dateString) {
+  const inputDate = new Date(dateString);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return inputDate < today;
+}

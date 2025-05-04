@@ -18,7 +18,7 @@ import Toast from "./Toast";
 
 const robotoFont = Roboto({ subsets: ["latin"], weight: "700" });
 
-function Form() {
+function Form({ title, buttonName }) {
   const [camp, setCamp] = useAtom(campAtoms);
   const [date, setDate] = useAtom(dateAtoms);
   const [shift, setShift] = useAtom(shiftAtoms);
@@ -26,7 +26,6 @@ function Form() {
   const [comdsName, setComdsName] = useAtom(commandersAtoms);
 
   const [isAdded, setIsAdded] = useState(false);
-  const [fulldate, setFulldate] = useState("");
 
   useEffect(() => {
     if (isAdded) {
@@ -40,12 +39,13 @@ function Form() {
 
   async function handleOnSubmit(event) {
     event.preventDefault();
+    const dayName = getDayName(date);
+    console.log(dayName);
     try {
-      const day = getDayName(date);
-      const fullDate = date + " " + day;
       const response = await axios.post("/api/users", {
         camp,
-        fulldate: fullDate,
+        date,
+        dayName,
         shift,
         troopersName,
         comdsName,
@@ -57,17 +57,17 @@ function Form() {
       setDate("");
       setCamp("");
       setShift("");
-      setFulldate("");
     } catch (err) {
       console.error(err);
     }
   }
+
   return (
     <>
       <h2
         className={`font-extrabold pb-8 text-center text-gray-800 text-3xl ${robotoFont.className}`}
       >
-        CREATE DUTY LIST
+        {title}
       </h2>
       <form className="w-full" onSubmit={(event) => handleOnSubmit(event)}>
         <select
@@ -202,7 +202,7 @@ function Form() {
           </select>
         </div>
         <button className="btn btn-soft btn-info mt-12 w-full" type="submit">
-          ADD DUTY
+          {buttonName}
         </button>
         {isAdded ? <Toast toastText="DUTY ADDED" /> : null}
       </form>

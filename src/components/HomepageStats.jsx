@@ -4,34 +4,43 @@ import { Roboto } from "next/font/google";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { useAtom } from "jotai";
 import axios from "axios";
+import { isDatePassed } from "@/util/index";
 
 const robotoFont = Roboto({ subsets: ["latin"], weight: "400" });
 
 function HomepageStats() {
   const [data, setData] = useAtom(homePageStatsAtoms);
+
   const [todayFormatted, setTodayFormatted] = useState(null);
+  const [dateHasPassed, setDateHasPassed] = useState(0);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
+        const formattedDate = new Date().toLocaleDateString("en-GB", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        // Get req & store in state
         const response = await axios.get("/api/users");
         setData(response.data);
+
+        // Get current date
+        setTodayFormatted(formattedDate);
+
+        // Count no of days passed
+        response.data.map((x) => {
+          if (isDatePassed(x.date)) {
+            setDateHasPassed((prev) => prev + 1);
+          }
+        });
       } catch (err) {
         console.error(err);
       }
     };
-
     getUsers();
-  }, []);
-
-  useEffect(() => {
-    const formattedDate = new Date().toLocaleDateString("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    setTodayFormatted(formattedDate);
   }, []);
 
   return (
@@ -48,7 +57,7 @@ function HomepageStats() {
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-green-400 rounded-md"></p>
-          <span className="font-bold">9</span>
+          <span className="font-bold">{dateHasPassed}</span>
 
           <span>Completed Duty</span>
         </div>
