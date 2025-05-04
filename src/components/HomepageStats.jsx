@@ -10,7 +10,6 @@ const robotoFont = Roboto({ subsets: ["latin"], weight: "400" });
 function HomepageStats() {
   const [data, setData] = useAtom(homePageStatsAtoms);
   const [todayFormatted, setTodayFormatted] = useState(null);
-  console.log(data);
 
   useEffect(() => {
     const getUsers = async () => {

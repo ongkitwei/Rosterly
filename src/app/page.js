@@ -1,5 +1,6 @@
-import HomepageStats from "@/components/homepage/HomepageStats";
+import HomepageStats from "@/components/HomepageStats";
 import Calendar from "@/ui/Calendar";
+import Form from "@/ui/Form";
 import React from "react";
 
 function page() {

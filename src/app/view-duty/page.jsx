@@ -1,5 +1,5 @@
 "use client";
-import DutiesCard from "@/components/view-duty/DutiesCard";
+import DutiesCard from "@/components/DutiesCard";
 import React, { useEffect, useState } from "react";
 import { MdLocationPin } from "react-icons/md";
 import { useAtom } from "jotai";
