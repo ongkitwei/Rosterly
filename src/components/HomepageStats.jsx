@@ -59,14 +59,16 @@ function HomepageStats() {
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-green-400 rounded-md"></p>
-          <span className="font-bold">{dateHasPassed}</span>
+          <span className="font-bold">X</span>
+          {/* <span className="font-bold">{dateHasPassed}</span> */}
 
           <span>Completed Duty</span>
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-yellow-400 rounded-md"></p>
 
-          <span className="font-bold">{dateYetPassed}</span>
+          <span className="font-bold">X</span>
+          {/* <span className="font-bold">{dateYetPassed}</span> */}
           <span>In Progress</span>
         </div>
       </div>

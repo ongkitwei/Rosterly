@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Lobster } from "next/font/google";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { IoMdArrowDropright } from "react-icons/io";
 import { useAtom } from "jotai";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { getDayAndMonthFromDateInput } from "@/util";
+import { useRouter } from "next/navigation";
 
 const lobsterFont = Lobster({ subsets: ["latin"], weight: "400" });
 const months = [
@@ -31,20 +32,38 @@ const dayList = [
   "Friday",
   "Saturday",
 ];
+
 function Calendar() {
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  }, []);
+
+  // Set timezone to sg
+  const now = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Singapore",
+  });
+  const sgDate = new Date(now);
+
   const [data, setData] = useAtom(homePageStatsAtoms);
   const [currentMonthNumberReflected, setCurrentMonthNumberReflected] =
-    useState(new Date().getMonth());
+    useState(sgDate.getMonth());
+
   const currentMonthName = months[currentMonthNumberReflected];
-  const currentDateInNumber = new Date().getDate();
+
+  const currentDateInNumber = sgDate.getDate();
+
   const currentMonthDays = new Date(
-    new Date().getFullYear(),
+    sgDate.getFullYear(),
     currentMonthNumberReflected + 1,
     0
   ).getDate();
 
-  const highlightedDates = data.map((item) =>
-    getDayAndMonthFromDateInput(item.date)
+  const highlightedDates = new Set(
+    data.map((item) => {
+      const { day, month } = getDayAndMonthFromDateInput(item.date);
+      return `${day}-${month}`;
+    })
   );
 
   return (
@@ -79,13 +98,12 @@ function Calendar() {
             key={i}
             className={`text-secondary-content border border-base-300 px-1.5 py-2.5 rounded-xl ${
               i + 1 === currentDateInNumber &&
-              currentMonthNumberReflected === new Date().getMonth()
+              currentMonthNumberReflected === sgDate.getMonth()
                 ? "bg-secondary text-secondary-content"
                 : null
             } ${
-              highlightedDates.some(
-                (d) =>
-                  d.day === i + 1 && d.month === currentMonthNumberReflected + 1
+              highlightedDates.has(
+                `${i + 1}-${currentMonthNumberReflected + 1}`
               )
                 ? "bg-green-300"
                 : ""
@@ -100,9 +118,9 @@ function Calendar() {
           <p className="h-3 w-3 bg-secondary rounded-md"></p>
           <span>Current Date</span>
         </div>
-        <div className="flex items-center gap-2 pr-2.5">
+        <div className="flex items-center gap-2 pr-6">
           <p className="h-3 w-3 bg-green-400 rounded-md"></p>
-          <span>Al Duties</span>
+          <span>All Duties</span>
         </div>
       </legend>
     </div>

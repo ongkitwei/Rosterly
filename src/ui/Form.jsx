@@ -15,7 +15,7 @@ import {
   commandersAtoms,
   reserveAtoms,
 } from "@/jotai/DutyFormAtoms";
-import Toast from "./Toast";
+import toast from "react-hot-toast";
 
 const robotoFont = Roboto({ subsets: ["latin"], weight: "700" });
 
@@ -26,18 +26,6 @@ function Form({ title, buttonName }) {
   const [troopersName, setTroopersName] = useAtom(troopersMainAtoms);
   const [comdsName, setComdsName] = useAtom(commandersAtoms);
   const [reserveName, setReserveName] = useAtom(reserveAtoms);
-
-  const [isAdded, setIsAdded] = useState(false);
-
-  useEffect(() => {
-    if (isAdded) {
-      const timer = setTimeout(() => {
-        setIsAdded(false);
-      }, 3000); // 3000ms = 3 seconds
-
-      return () => clearTimeout(timer); // Cleanup on unmount
-    }
-  }, [isAdded]);
 
   async function handleOnSubmit(event) {
     event.preventDefault();
@@ -53,8 +41,9 @@ function Form({ title, buttonName }) {
         comdsName,
         reserveName,
       });
+
+      toast.success("Duty Added");
       console.log(response);
-      setIsAdded(!isAdded);
       setComdsName([]);
       setTroopersName([""]);
       setDate("");
@@ -63,6 +52,10 @@ function Form({ title, buttonName }) {
       setReserveName([""]);
     } catch (err) {
       console.error(err);
+      toast.error(err || "Failed to add duty", {
+        duration: 4000,
+        position: "top-center",
+      });
     }
   }
 
@@ -78,6 +71,7 @@ function Form({ title, buttonName }) {
           className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
           onChange={(x) => setCamp(x.target.value)}
           value={camp || ""}
+          required
         >
           <option value="" disabled>
             select camp
@@ -101,6 +95,7 @@ function Form({ title, buttonName }) {
                 setDate(x.target.value);
               }}
               value={date}
+              required
             />
           </div>
 
@@ -108,6 +103,7 @@ function Form({ title, buttonName }) {
             className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
             onChange={(x) => setShift(x.target.value)}
             value={shift || ""}
+            required
           >
             <option value="" disabled>
               shift hours
@@ -239,7 +235,6 @@ function Form({ title, buttonName }) {
         <button className="btn btn-soft btn-info mt-12 w-full" type="submit">
           {buttonName}
         </button>
-        {isAdded ? <Toast toastText="DUTY ADDED" /> : null}
       </form>
     </>
   );
