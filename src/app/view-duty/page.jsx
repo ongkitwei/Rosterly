@@ -37,6 +37,7 @@ function page() {
           }
           camp={x.camp}
           guardcomd={x.comdsName?.[0]}
+          guardtwo={x.comdsName?.[1]}
           id={x._id}
         />
       ))}

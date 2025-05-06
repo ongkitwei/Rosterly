@@ -8,7 +8,16 @@ import { useAtom } from "jotai";
 import axios from "axios";
 import Modal from "@/ui/Modal";
 
-function DutiesCard({ shift, camp, noOfPeople, date, day, guardcomd, id }) {
+function DutiesCard({
+  shift,
+  camp,
+  noOfPeople,
+  date,
+  day,
+  guardcomd,
+  guardtwo,
+  id,
+}) {
   async function handleDeleteButton(id) {
     try {
       const newData = data.filter((prev) => prev._id !== id);
@@ -51,16 +60,31 @@ function DutiesCard({ shift, camp, noOfPeople, date, day, guardcomd, id }) {
       <h2 className="text-slate-500 text-sm">
         {date} {day}
       </h2>
-      <div className="grid grid-cols-2 gap-3 pt-3">
-        {" "}
-        <span className="badge badge-secondary rounded-lg">{shift}</span>
-        <span className="badge badge-primary rounded-lg">{camp}</span>
-        <span className="badge badge-accent rounded-lg">
+      <div className="grid grid-cols-6 gap-3 pt-3">
+        {/* First row: 3 items (each takes 2 cols out of 6) */}
+        <span className="badge badge-soft badge-secondary col-span-2 w-full">
+          {shift}
+        </span>
+        <span className="badge badge-soft badge-primary col-span-2 w-full">
+          {camp}
+        </span>
+        <span className="badge badge-soft badge-neutral col-span-2 w-full">
           {noOfPeople} PEOPLE
         </span>
-        <span className="badge badge-warning rounded-lg w-fit h-fit">
+
+        {/* Second row: each takes 3 cols out of 6 (i.e. half row) */}
+        <span
+          className={`badge badge-soft badge-info w-full h-fit ${
+            guardtwo ? "col-span-3" : "col-span-6"
+          } `}
+        >
           {guardcomd}
         </span>
+        {guardtwo && (
+          <span className="badge badge-soft badge-info col-span-3 w-full h-fit">
+            {guardtwo}
+          </span>
+        )}
       </div>
     </div>
   );

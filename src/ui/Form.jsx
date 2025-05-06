@@ -26,11 +26,15 @@ function Form({ title, buttonName }) {
   const [troopersName, setTroopersName] = useAtom(troopersMainAtoms);
   const [comdsName, setComdsName] = useAtom(commandersAtoms);
   const [reserveName, setReserveName] = useAtom(reserveAtoms);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleOnSubmit(event) {
     event.preventDefault();
     const dayName = getDayName(date);
     console.log(dayName);
+
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const response = await axios.post("/api/users", {
         camp,
@@ -56,6 +60,8 @@ function Form({ title, buttonName }) {
         duration: 4000,
         position: "top-center",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -81,11 +87,11 @@ function Form({ title, buttonName }) {
           <option value="BEDOK">BEDOK</option>
         </select>
 
-        <div className="flex flex-row items-end justify-center mt-8 gap-4 mb-12">
+        <div className="flex flex-row items-end justify-center mt-8 gap-3 mb-12">
           <div>
             {" "}
             <label htmlFor="datee" className="pl-2 text-slate-500 text-xs">
-              Date of Guard Duty
+              Guard Duty date
             </label>
             <input
               type="date"
@@ -182,24 +188,7 @@ function Form({ title, buttonName }) {
               </option>
             ))}
           </select>
-          {/* <select
-            className="mt-4 border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500 mb-12"
-            onChange={(e) => {
-              const updated = [...comdsName];
-              updated[2] = e.target.value; // for GC1
-              setComdsName(updated);
-            }}
-            value={comdsName[2] || ""}
-          >
-            <option value="" disabled>
-              G Reserve
-            </option>
-            {comdnames.map((name, index) => (
-              <option key={index} value={name}>
-                {name}
-              </option>
-            ))}
-          </select> */}
+
           <span className="pl-1 pr-8">RESERVES</span>
           <span
             className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 hover:cursor-pointer"
@@ -233,7 +222,11 @@ function Form({ title, buttonName }) {
         </div>
 
         <button className="btn btn-soft btn-info mt-12 w-full" type="submit">
-          {buttonName}
+          {isLoading ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            buttonName
+          )}
         </button>
       </form>
     </>

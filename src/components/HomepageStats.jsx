@@ -46,7 +46,7 @@ function HomepageStats() {
   }, []);
 
   return (
-    <div className="w-full max-w-[95%] lg:max-w-[80%] h-fit bg-base-100 shadow-md rounded-2xl mt-32 p-4">
+    <div className="w-full max-w-[95%] lg:max-w-[80%] h-fit bg-base-100 shadow-md rounded-2xl mt-36 p-4">
       <h2 className={`text-2xl ${robotoFont.className}`}>
         Good Morning! <span>YZ</span>
       </h2>
@@ -54,15 +54,15 @@ function HomepageStats() {
       <div className="flex flex-row items-center justify-between text-slate-500 pt-8">
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-indigo-400 rounded-md"></p>
-          <span className="font-bold">{data?.length}</span>
-          <span>Total Duties</span>
+          <span className="font-bold">X</span>
+          <span>Completed Duty</span>
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-green-400 rounded-md"></p>
-          <span className="font-bold">X</span>
+          <span className="font-bold">{data?.length}</span>
           {/* <span className="font-bold">{dateHasPassed}</span> */}
 
-          <span>Completed Duty</span>
+          <span>Total Duties</span>
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-yellow-400 rounded-md"></p>
