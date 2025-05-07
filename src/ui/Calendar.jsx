@@ -35,6 +35,7 @@ const dayList = [
 
 function Calendar() {
   const router = useRouter();
+
   useEffect(() => {
     router.refresh();
   }, []);
@@ -48,6 +49,7 @@ function Calendar() {
   const [data, setData] = useAtom(homePageStatsAtoms);
   const [currentMonthNumberReflected, setCurrentMonthNumberReflected] =
     useState(sgDate.getMonth());
+  const [isLoading, setIsLoading] = useState(true);
 
   const currentMonthName = months[currentMonthNumberReflected];
 
@@ -67,7 +69,7 @@ function Calendar() {
   );
 
   return (
-    <div className="w-full max-w-[95%] lg:max-w-[80%] mx-auto shadow-lg rounded-2xl p-1 py-5 md:p-8">
+    <div className="w-full max-w-[95%] lg:max-w-[80%] mx-auto shadow-lg rounded-2xl p-1 py-5 md:p-8 bg-base-100">
       <h1
         className={`text-secondary text-3xl font-bold flex justify-center items-center gap-3 ${lobsterFont.className}`}
       >
@@ -90,6 +92,7 @@ function Calendar() {
           }}
         />
       </h1>
+
       <div className="grid grid-cols-7 gap-2 p-8">
         <span></span>
         <span></span>

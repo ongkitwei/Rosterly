@@ -53,17 +53,17 @@ function HomepageStats() {
       <p className="text-slate-400">{todayFormatted}</p>
       <div className="flex flex-row items-center justify-between text-slate-500 pt-8">
         <div className="flex items-center gap-1 text-sm md:text-base">
-          <p className="h-3 w-3 bg-indigo-400 rounded-md"></p>
-          <span className="font-bold">X</span>
-          <span>Completed Duty</span>
-        </div>
-        <div className="flex items-center gap-1 text-sm md:text-base">
-          <p className="h-3 w-3 bg-green-400 rounded-md"></p>
+          <p className="h-3 w-3 bg-orange-300 rounded-md"></p>
           <span className="font-bold">{data?.length}</span>
-          {/* <span className="font-bold">{dateHasPassed}</span> */}
-
           <span>Total Duties</span>
         </div>
+        <div className="flex items-center gap-1 text-sm md:text-base">
+          <p className="h-3 w-3 bg-indigo-400 rounded-md"></p>
+          {/* <span className="font-bold">X</span> */}
+          <span className="font-bold">{dateHasPassed}</span>
+          <span>Completed Duty</span>
+        </div>
+
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-yellow-400 rounded-md"></p>
 
