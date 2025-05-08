@@ -7,6 +7,7 @@ import "primeicons/primeicons.css";
 import { Calendar } from "primereact/calendar";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import InfoPopover from "./InfoPopover";
 
 function Calendar2() {
   const [date, setDate] = useState(null);
@@ -38,7 +39,7 @@ function Calendar2() {
     <div className="w-full max-w-[95%] lg:max-w-[80%] pt-4">
       <h2 className="text-xl font-bold mb-2 flex items-center gap-1">
         Guard Duty Dates
-        <IoMdInformationCircleOutline size={23} />
+        <InfoPopover />
       </h2>
       <Calendar
         value={date}

@@ -27,3 +27,18 @@ export function isDatePassed(dateString) {
   today.setHours(0, 0, 0, 0);
   return inputDate < today;
 }
+
+export function isDutyToday(dateString) {
+  // Convert the current time to Singapore time
+  const now = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Singapore",
+  });
+
+  // Create a new Date object based on the Singapore-local time string
+  const sgNow = new Date(now);
+  sgNow.setHours(0, 0, 0, 0); // Normalize to midnight
+  const inputDate = new Date(dateString);
+  inputDate.setHours(0, 0, 0, 0); // Normalize to midnight
+
+  return inputDate.getTime() === sgNow.getTime();
+}

@@ -22,7 +22,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="acid">
-      <head></head>
+      <head>
+        <link rel="icon" href="/file.jpeg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-between min-h-screen`}
       >

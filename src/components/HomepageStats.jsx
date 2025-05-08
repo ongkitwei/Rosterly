@@ -1,19 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Roboto } from "next/font/google";
+import { Roboto, Poppins } from "next/font/google";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { useAtom } from "jotai";
 import axios from "axios";
-import { isDatePassed } from "@/util/index";
+import { isDatePassed, isDutyToday } from "@/util/index";
 
 const robotoFont = Roboto({ subsets: ["latin"], weight: "400" });
+const poppinsFont = Poppins({ subsets: ["latin"], weight: "400" });
 
 function HomepageStats() {
   const [data, setData] = useAtom(homePageStatsAtoms);
-
   const [todayFormatted, setTodayFormatted] = useState(null);
   const [dateHasPassed, setDateHasPassed] = useState(0);
-  const [dateYetPassed, setDateYetPassed] = useState(0);
+  const [todaysGd, setTodaysGd] = useState(0);
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -34,8 +35,12 @@ function HomepageStats() {
         response.data.map((x) => {
           if (isDatePassed(x.date)) {
             setDateHasPassed((prev) => prev + 1);
-          } else {
-            setDateYetPassed((prev) => prev + 1);
+          }
+        });
+
+        response.data.map((x) => {
+          if (isDutyToday(x.date)) {
+            setTodaysGd((prev) => prev + 1);
           }
         });
       } catch (err) {
@@ -47,29 +52,29 @@ function HomepageStats() {
 
   return (
     <div className="w-full max-w-[95%] lg:max-w-[80%] h-fit bg-base-100 shadow-md rounded-2xl mt-36 p-4">
-      <h2 className={`text-2xl ${robotoFont.className}`}>
-        Good Morning! <span>YZ</span>
+      <h2 className={`text-2xl ${poppinsFont.className}`}>
+        <span>Alpha</span> GD Duty Schedule
       </h2>
       <p className="text-slate-400">{todayFormatted}</p>
       <div className="flex flex-row items-center justify-between text-slate-500 pt-8">
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-orange-300 rounded-md"></p>
           <span className="font-bold">{data?.length}</span>
-          <span>Total Duties</span>
+          <span>Duties</span>
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-indigo-400 rounded-md"></p>
           {/* <span className="font-bold">X</span> */}
           <span className="font-bold">{dateHasPassed}</span>
-          <span>Completed Duty</span>
+          <span>Completed</span>
         </div>
 
         <div className="flex items-center gap-1 text-sm md:text-base">
-          <p className="h-3 w-3 bg-yellow-400 rounded-md"></p>
+          <p className="h-3 w-3 bg-green-300 rounded-md"></p>
 
-          <span className="font-bold">X</span>
-          {/* <span className="font-bold">{dateYetPassed}</span> */}
-          <span>In Progress</span>
+          {/* <span className="font-bold">X</span> */}
+          <span className="font-bold">{todaysGd}</span>
+          <span>Duty Today</span>
         </div>
       </div>
     </div>
