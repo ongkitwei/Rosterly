@@ -45,6 +45,16 @@ function Form({ title, buttonName }) {
         comdsName,
         reserveName,
       });
+      // const response2 = await axios.post("/api/send-sms", {
+      //   to: "+6594651369", // 👈 recipient phone number
+      //   message: "Your duty starts at 0700hrs tomorrow. Be ready.",
+      // });
+
+      // if (response2.data.success) {
+      //   console.log("SMS sent successfully! SID:", response2.data.sid);
+      // } else {
+      //   console.error("Failed to send SMS:", response2.data.error);
+      // }
 
       toast.success("Duty Added");
       console.log(response);

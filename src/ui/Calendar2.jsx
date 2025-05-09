@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -8,11 +8,25 @@ import { Calendar } from "primereact/calendar";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import InfoPopover from "./InfoPopover";
+import Loading from "./Loading";
+import SkeletonCalendar from "./SkeletonCalendar";
 
 function Calendar2() {
   const [date, setDate] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useAtom(homePageStatsAtoms);
   console.log(data);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      const timeout = setTimeout(() => {
+        setLoading(false);
+      }, 800); // Allow DOM render delay, tweak as needed
+
+      return () => clearTimeout(timeout);
+    }
+  }, [data]);
+
   const redDatesArray = data.map((entry) => entry.date); // array of "YYYY-MM-DD" strings
   const redDatesSet = new Set(redDatesArray);
 
@@ -23,7 +37,6 @@ function Calendar2() {
       dateObj.day
     )}`;
     const isRedDate = redDatesSet.has(formatted);
-
     return (
       <div
         className={`w-full h-full flex items-center justify-center rounded-full ${
@@ -41,13 +54,17 @@ function Calendar2() {
         Guard Duty Dates
         <InfoPopover />
       </h2>
-      <Calendar
-        value={date}
-        onChange={(e) => setDate(e.value)}
-        inline
-        dateTemplate={dateTemplate}
-        className="w-full shadow-md"
-      />
+      {loading ? (
+        <SkeletonCalendar />
+      ) : (
+        <Calendar
+          value={date}
+          onChange={(e) => setDate(e.value)}
+          inline
+          dateTemplate={dateTemplate}
+          className="w-full shadow-md"
+        />
+      )}
     </div>
   );
 }

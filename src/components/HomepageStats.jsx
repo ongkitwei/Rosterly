@@ -5,6 +5,7 @@ import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
 import { useAtom } from "jotai";
 import axios from "axios";
 import { isDatePassed, isDutyToday } from "@/util/index";
+import Loading from "@/ui/Loading";
 
 const robotoFont = Roboto({ subsets: ["latin"], weight: "400" });
 const poppinsFont = Poppins({ subsets: ["latin"], weight: "400" });
@@ -14,6 +15,7 @@ function HomepageStats() {
   const [todayFormatted, setTodayFormatted] = useState(null);
   const [dateHasPassed, setDateHasPassed] = useState(0);
   const [todaysGd, setTodaysGd] = useState(0);
+  const [loading, setLoading] = useState([true, true, true]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -24,9 +26,11 @@ function HomepageStats() {
           month: "long",
           year: "numeric",
         });
+
         // Get req & store in state
         const response = await axios.get("/api/users");
         setData(response.data);
+        setLoading(loading[0] == false);
 
         // Get current date
         setTodayFormatted(formattedDate);
@@ -36,12 +40,15 @@ function HomepageStats() {
           if (isDatePassed(x.date)) {
             setDateHasPassed((prev) => prev + 1);
           }
+          setLoading(loading[1] == false);
         });
 
+        // Check if there is duty today
         response.data.map((x) => {
           if (isDutyToday(x.date)) {
             setTodaysGd((prev) => prev + 1);
           }
+          setLoading(loading[2] == false);
         });
       } catch (err) {
         console.error(err);
@@ -59,13 +66,17 @@ function HomepageStats() {
       <div className="flex flex-row items-center justify-between text-slate-500 pt-8">
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-orange-300 rounded-md"></p>
-          <span className="font-bold">{data?.length}</span>
+          <span className="font-bold">
+            {loading[0] ? <Loading size="xs" /> : data?.length}
+          </span>
           <span>Duties</span>
         </div>
         <div className="flex items-center gap-1 text-sm md:text-base">
           <p className="h-3 w-3 bg-indigo-400 rounded-md"></p>
           {/* <span className="font-bold">X</span> */}
-          <span className="font-bold">{dateHasPassed}</span>
+          <span className="font-bold">
+            {loading[1] ? <Loading size="xs" /> : dateHasPassed}
+          </span>
           <span>Completed</span>
         </div>
 
@@ -73,7 +84,9 @@ function HomepageStats() {
           <p className="h-3 w-3 bg-green-300 rounded-md"></p>
 
           {/* <span className="font-bold">X</span> */}
-          <span className="font-bold">{todaysGd}</span>
+          <span className="font-bold">
+            {loading[2] ? <Loading size="xs" /> : todaysGd}
+          </span>
           <span>Duty Today</span>
         </div>
       </div>

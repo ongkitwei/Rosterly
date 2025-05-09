@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +27,23 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/file.jpeg" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-between min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-between min-h-screen relative`}
       >
+        {/* Logo Wallpaper - Fixed Background */}
+        <div className="fixed inset-0 z-10 overflow-hidden">
+          <Image
+            src="/alphanewlogob.png" // Your logo path
+            alt="Rosterly Background"
+            fill
+            className="object-cover opacity-40" // Subtle 10% opacity
+            quality={50} // Optimizes performance
+            priority
+          />
+          <div className="absolute inset-0 bg-base-100/30"></div>
+        </div>
         <Header />
-        {children}
+        <main className="flex-1 relative z-10">{children}</main>{" "}
+        {/* z-10 brings content forward */}
         <Footer />
         <Toaster position="top-center" reverseOrder={false} />
       </body>
