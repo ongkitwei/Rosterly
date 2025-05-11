@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Roboto, Poppins } from "next/font/google";
-import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
+import {
+  homePageStatsAtoms,
+  homePageLoadingAtoms,
+} from "@/jotai/HomePageAtoms";
 import { useAtom } from "jotai";
 import axios from "axios";
 import { isDatePassed, isDutyToday } from "@/util/index";
@@ -12,10 +15,11 @@ const poppinsFont = Poppins({ subsets: ["latin"], weight: "400" });
 
 function HomepageStats() {
   const [data, setData] = useAtom(homePageStatsAtoms);
+  const [loading, setLoading] = useAtom(homePageLoadingAtoms);
   const [todayFormatted, setTodayFormatted] = useState(null);
   const [dateHasPassed, setDateHasPassed] = useState(0);
   const [todaysGd, setTodaysGd] = useState(0);
-  const [loading, setLoading] = useState([true, true, true]);
+  // const [loading, setLoading] = useState([true, true, true]);
 
   useEffect(() => {
     const getUsers = async () => {

@@ -5,27 +5,18 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { Calendar } from "primereact/calendar";
-import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
-import { IoMdInformationCircleOutline } from "react-icons/io";
+import {
+  homePageStatsAtoms,
+  homePageLoadingAtoms,
+} from "@/jotai/HomePageAtoms";
 import InfoPopover from "./InfoPopover";
-import Loading from "./Loading";
 import SkeletonCalendar from "./SkeletonCalendar";
 
 function Calendar2() {
-  const [date, setDate] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useAtom(homePageStatsAtoms);
+  const [loading, setLoading] = useAtom(homePageLoadingAtoms);
+  const [date, setDate] = useState(null);
   console.log(data);
-
-  useEffect(() => {
-    if (data.length > 0) {
-      const timeout = setTimeout(() => {
-        setLoading(false);
-      }, 800); // Allow DOM render delay, tweak as needed
-
-      return () => clearTimeout(timeout);
-    }
-  }, [data]);
 
   const redDatesArray = data.map((entry) => entry.date); // array of "YYYY-MM-DD" strings
   const redDatesSet = new Set(redDatesArray);

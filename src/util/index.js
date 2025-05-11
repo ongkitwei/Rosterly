@@ -1,3 +1,5 @@
+import { func } from "joi";
+
 export function getDayAndMonthFromDateInput(dateInput) {
   const date = new Date(dateInput);
 
@@ -41,4 +43,56 @@ export function isDutyToday(dateString) {
   inputDate.setHours(0, 0, 0, 0); // Normalize to midnight
 
   return inputDate.getTime() === sgNow.getTime();
+}
+
+export function filterMonth(monthToFilter, dateString) {
+  const date = new Date(dateString);
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  return month === monthToFilter;
+}
+
+export function formatTextForWhatsapp(data) {
+  let formattedText = "";
+
+  // Sort data: BEDOK first, then DIEPPE (or others alphabetically if needed)
+  const sortedData = [...data].sort((a, b) => {
+    if (a.camp === "BEDOK" && b.camp !== "BEDOK") return -1;
+    if (a.camp !== "BEDOK" && b.camp === "BEDOK") return 1;
+    return 0; // keep existing order for same camp
+  });
+
+  sortedData.forEach((entry) => {
+    const { camp, date, dayName, shift, comdsName, troopersName, reserveName } =
+      entry;
+
+    const dateObj = new Date(date);
+    const formattedDate = `${dateObj.getDate()}/${
+      dateObj.getMonth() + 1
+    }/${dateObj.getFullYear().toString().slice(-2)}`;
+
+    formattedText += `*${camp}*\n`;
+    formattedText += `*${formattedDate} (${dayName})*\n\n`;
+
+    if (comdsName && comdsName.length) {
+      formattedText += `*GC* ${comdsName[0]}\n`;
+      if (comdsName[1]) formattedText += `*G2* ${comdsName[1]}\n`;
+    }
+
+    if (troopersName && troopersName.length) {
+      troopersName.forEach((trooper) => {
+        formattedText += `${trooper}\n`;
+      });
+    }
+
+    if (reserveName && reserveName.length) {
+      formattedText += `\n*RESERVE:*\n`;
+      reserveName.forEach((reserve) => {
+        formattedText += `${reserve}\n`;
+      });
+    }
+
+    formattedText += `\n\n---------------------------------\n\n`;
+  });
+
+  return formattedText.trim();
 }

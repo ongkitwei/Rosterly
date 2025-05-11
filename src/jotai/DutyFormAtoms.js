@@ -6,6 +6,7 @@ const dateAtoms = atom("");
 const troopersMainAtoms = atom([""]);
 const commandersAtoms = atom([]);
 const reserveAtoms = atom([""]);
+const editAtoms = atom([]);
 
 export {
   campAtoms,
@@ -14,4 +15,5 @@ export {
   troopersMainAtoms,
   commandersAtoms,
   reserveAtoms,
+  editAtoms,
 };

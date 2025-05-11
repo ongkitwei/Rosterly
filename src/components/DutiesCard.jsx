@@ -4,6 +4,7 @@ import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { homePageStatsAtoms } from "@/jotai/HomePageAtoms";
+import { editAtoms } from "@/jotai/DutyFormAtoms";
 import { useAtom } from "jotai";
 import axios from "axios";
 import Modal from "@/ui/Modal";
@@ -33,6 +34,7 @@ function DutiesCard({
   }
 
   const [data, setData] = useAtom(homePageStatsAtoms);
+  const [editData, setEditData] = useAtom(editAtoms);
 
   return (
     <div className="w-full max-w-[95%] mx-auto lg:max-w-[60%] h-fit bg-base-100 shadow-lg rounded-2xl p-5 mb-4">
@@ -40,7 +42,13 @@ function DutiesCard({
         <h1 className="text-xl lg:text-3xl font-bold">{camp} Guard Duty</h1>
         <div className="flex items-center gap-3">
           <Link href="/view-duty/duty-content">
-            <MdOutlineEdit size={25} />
+            <MdOutlineEdit
+              size={25}
+              onClick={() => {
+                const dataToEdit = data.find((x) => x._id == id);
+                setEditData(dataToEdit);
+              }}
+            />
           </Link>
           <MdDeleteOutline
             size={25}
