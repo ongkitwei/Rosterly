@@ -21,6 +21,15 @@ import toast from "react-hot-toast";
 const robotoFont = Roboto({ subsets: ["latin"], weight: "700" });
 
 function UpdateDutyForm() {
+  const [camp, setCamp] = useAtom(campAtoms);
+  const [date, setDate] = useAtom(dateAtoms);
+  const [shift, setShift] = useAtom(shiftAtoms);
+  const [editData, setEditData] = useAtom(editAtoms);
+  const [troopersName, setTroopersName] = useAtom(troopersMainAtoms);
+  const [comdsName, setComdsName] = useAtom(commandersAtoms);
+  const [reserveName, setReserveName] = useAtom(reserveAtoms);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (editData) {
       setCamp(editData.camp);
@@ -31,14 +40,6 @@ function UpdateDutyForm() {
       setReserveName(editData.reserveName);
     }
   }, []);
-  const [camp, setCamp] = useAtom(campAtoms);
-  const [date, setDate] = useAtom(dateAtoms);
-  const [shift, setShift] = useAtom(shiftAtoms);
-  const [editData, setEditData] = useAtom(editAtoms);
-  const [troopersName, setTroopersName] = useAtom(troopersMainAtoms);
-  const [comdsName, setComdsName] = useAtom(commandersAtoms);
-  const [reserveName, setReserveName] = useAtom(reserveAtoms);
-  const [isLoading, setIsLoading] = useState(false);
 
   async function handleOnSubmit(event) {
     event.preventDefault();
@@ -86,10 +87,12 @@ function UpdateDutyForm() {
         <select
           className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
           onChange={(x) => setCamp(x.target.value)}
-          value={camp}
+          value={camp || ""}
           required
         >
-          <option disabled>select camp</option>
+          <option value="" disabled>
+            select camp
+          </option>
           <option value="DIEPPE">DIEPPE</option>
           <option value="BEDOK">BEDOK</option>
         </select>
@@ -115,10 +118,12 @@ function UpdateDutyForm() {
           <select
             className="border border-gray-300 text-sm rounded-lg focus:border-gray-500 block w-full p-2.5 placeholder-gray-400 text-gray-500 focus:ring-gray-500"
             onChange={(x) => setShift(x.target.value)}
-            value={shift}
+            value={shift || ""}
             required
           >
-            <option disabled>shift hours</option>
+            <option value="" disabled>
+              shift hours
+            </option>
             <option value="12 HR">12 HR</option>
             <option value="24 HR">24 HR</option>
           </select>
