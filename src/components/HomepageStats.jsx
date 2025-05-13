@@ -58,6 +58,7 @@ function HomepageStats() {
         console.error(err);
       }
     };
+
     getUsers();
   }, []);
 

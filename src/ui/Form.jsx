@@ -28,6 +28,15 @@ function Form({ title, buttonName }) {
   const [reserveName, setReserveName] = useAtom(reserveAtoms);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setComdsName([]);
+    setTroopersName([""]);
+    setDate("");
+    setCamp("");
+    setShift("");
+    setReserveName([""]);
+  }, []);
+
   async function handleOnSubmit(event) {
     event.preventDefault();
     const dayName = getDayName(date);
