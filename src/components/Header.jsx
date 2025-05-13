@@ -11,7 +11,7 @@ function Header() {
       className={`${poppinsFont.className} text-3xl text-neutral w-full py-4 border border-b-2 border-slate-200 flex items-center justify-center z-50 fixed backdrop-blur-lg opacity-100`}
     >
       <div className="absolute dropdown left-0 pl-8">
-        <div tabIndex={0} className="btn btn-ghost btn-circle">
+        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -28,7 +28,10 @@ function Header() {
             />{" "}
           </svg>
         </div>
-        <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <ul
+          tabIndex={0}
+          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[100] mt-3 w-52 p-2 shadow"
+        >
           <li>
             <Link href="/" className="text-base">
               Homepage
