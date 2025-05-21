@@ -15,7 +15,7 @@ import SkeletonCalendar from "./SkeletonCalendar";
 function Calendar2() {
   const [data, setData] = useAtom(homePageStatsAtoms);
   const [loading, setLoading] = useAtom(homePageLoadingAtoms);
-  const [selectedInfo, setSelectedInfo] = useState(null);
+  const [selectedInfo, setSelectedInfo] = useState([]);
   const [date, setDate] = useState(null);
   console.log(data);
 
@@ -29,12 +29,12 @@ function Calendar2() {
       dateObj.day
     )}`;
     const isRedDate = redDatesSet.has(formatted);
-    const dutyEntry = data.find((entry) => entry.date === formatted);
+    const dutyEntry = data.filter((entry) => entry.date === formatted);
 
     return (
       <div
         onClick={() => {
-          if (isRedDate && dutyEntry) {
+          if (isRedDate && dutyEntry.length > 0) {
             setSelectedInfo(dutyEntry); // pass full object
             document.getElementById("my_modal_4")?.showModal();
           }
@@ -67,7 +67,7 @@ function Calendar2() {
       )}
 
       {/* Modal */}
-      {selectedInfo && (
+      {selectedInfo.length > 0 && (
         <dialog id="my_modal_4" className="modal" open>
           <div className="modal-box max-w-xl">
             <form method="dialog">
@@ -75,48 +75,54 @@ function Calendar2() {
                 ✕
               </button>
             </form>
-            <h3 className="font-bold text-lg mb-2">Guard Duty Details</h3>
-            <p>
-              <strong>Date:</strong> {selectedInfo.date} ({selectedInfo.dayName}
-              )
-            </p>
-            <p>
-              <strong>Camp:</strong> {selectedInfo.camp}
-            </p>
-            <p>
-              <strong>Shift:</strong> {selectedInfo.shift}
-            </p>
+            <h3 className="font-bold text-lg mb-4">Guard Duty Details</h3>
 
-            <div className="mt-4">
-              <p>
-                <strong>Comds:</strong>
-              </p>
-              <ul className="list-disc list-inside">
-                {selectedInfo.comdsName?.map((name, idx) => (
-                  <li key={`comd-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-2">
-              <p>
-                <strong>Troopers:</strong>
-              </p>
-              <ul className="list-disc list-inside">
-                {selectedInfo.troopersName?.map((name, idx) => (
-                  <li key={`trooper-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-2">
-              <p>
-                <strong>Reserves:</strong>
-              </p>
-              <ul className="list-disc list-inside">
-                {selectedInfo.reserveName?.map((name, idx) => (
-                  <li key={`reserve-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </div>
+            {selectedInfo.map((entry, i) => (
+              <div key={`entry-${i}`} className="mb-4 border-b pb-3">
+                <p>
+                  <strong>Date:</strong> {entry.date} ({entry.dayName})
+                </p>
+                <p>
+                  <strong>Camp:</strong> {entry.camp}
+                </p>
+                <p>
+                  <strong>Shift:</strong> {entry.shift}
+                </p>
+
+                <div className="mt-2">
+                  <p>
+                    <strong>Comds:</strong>
+                  </p>
+                  <ul className="list-disc list-inside">
+                    {entry.comdsName?.map((name, idx) => (
+                      <li key={`comd-${i}-${idx}`}>{name}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-2">
+                  <p>
+                    <strong>Troopers:</strong>
+                  </p>
+                  <ul className="list-disc list-inside">
+                    {entry.troopersName?.map((name, idx) => (
+                      <li key={`trooper-${i}-${idx}`}>{name}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-2">
+                  <p>
+                    <strong>Reserves:</strong>
+                  </p>
+                  <ul className="list-disc list-inside">
+                    {entry.reserveName?.map((name, idx) => (
+                      <li key={`reserve-${i}-${idx}`}>{name}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
           </div>
         </dialog>
       )}
