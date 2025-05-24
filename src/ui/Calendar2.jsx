@@ -69,7 +69,7 @@ function Calendar2() {
       {/* Modal */}
       {selectedInfo.length > 0 && (
         <dialog id="my_modal_4" className="modal" open>
-          <div className="modal-box max-w-xl">
+          <div className="modal-box max-w-xl max-h-[75%]">
             <form method="dialog">
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                 ✕
